@@ -1,3 +1,4 @@
 <p *ngFor="let expense of expenses">
-  {{expense.name}} on {{expense.date}}: ${{expense.amount}} -- {{expense.description}}
+  {{expense.name}} on {{expense.date | date:'mediumDate'}}: {{expense.amount | currency:'USD':true:'1.2-2'}} -- {{expense.description}}
+  <br>
 </p>

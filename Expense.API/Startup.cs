@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Expense.API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,9 @@ namespace Expense.API
 
             // Adds repositories as a service to make them injectible.
             services.AddScoped<IEntryRepository, EntryRepository>();
+
+            // Adds the AutoMapper as a service.
+            services.AddAutoMapper(typeof(EntryRepository).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,7 +13,7 @@ namespace Expense.API.DTOs
         public DateTime Date { get; set; }
 
         [Required]
-        public string Amount { get; set; }
+        public double Amount { get; set; }
 
         [Required]
         public string Description { get; set; }

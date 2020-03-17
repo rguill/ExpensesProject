@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Expense.API.Data;
 using Expense.API.DTOs;
 using Expense.API.Models;
@@ -15,8 +16,10 @@ namespace Expense.API.Controllers
     {
         private readonly DataContext _context;
         private readonly IEntryRepository _repo;
-        public ExpenseController(DataContext context, IEntryRepository repo)
+        private readonly IMapper _mapper;
+        public ExpenseController(DataContext context, IEntryRepository repo, IMapper mapper)
         {
+            _mapper = mapper;
             _repo = repo;
             _context = context;
         }
@@ -27,22 +30,25 @@ namespace Expense.API.Controllers
         {
             var expenses = await _context.Expenses.ToListAsync();
 
-            return Ok(expenses);
+            var expensesToReturn = _mapper.Map<IEnumerable<ExpenseToList>>(expenses);
+
+            return Ok(expensesToReturn);
         }
 
         // Entry method posts a new database entry to the API.
         [HttpPost("entry")]
         public async Task<IActionResult> Entry(ExpenseToCreateDTO expenseToCreate)
         {
-            var newEntry = new Expenses {
+            var newEntry = new Expenses
+            {
                 Name = expenseToCreate.Name,
                 Date = expenseToCreate.Date,
-                Amount = expenseToCreate.Amount,
+                Amount = expenseToCreate.Amount.ToString(),
                 Description = expenseToCreate.Description
             };
-            
+
             var createdEntry = await _repo.EnterExpense(newEntry);
-            
+
             return StatusCode(201);
         }
     }
