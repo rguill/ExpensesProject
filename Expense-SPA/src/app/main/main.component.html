@@ -1,0 +1,53 @@
+<form [formGroup]="entryForm" (ngSubmit)="entry()">
+  <h2 class="text-center text-primary">Enter an Expense</h2>
+  <hr>
+
+  <div class="form-group">
+    <input type="text"
+      [ngClass]="{'is-invalid': entryForm.get('name').errors 
+        && entryForm.get('name').touched}"
+      class="form-control" 
+      formControlName="name" 
+      placeholder="Name">
+    <div class="invalid-feedback">Please enter an employee's name.</div>
+  </div>
+
+  <div class="form-group">
+    <input 
+      [ngClass]="{'is-invalid': entryForm.get('date').errors 
+        && entryForm.get('date').touched}" 
+      class="form-control"
+      placeholder="Date" 
+      formControlName="date" 
+      type="text" 
+      bsDatepicker [bsConfig]="bsConfig">
+    <div class="invalid-feedback" *ngIf="entryForm.get('date').touched 
+      && entryForm.get('date').hasError('required')">Date of Birth is required</div>
+  </div>
+
+  <div class="form-group">
+    <input type="text"
+      [ngClass]="{'is-invalid': entryForm.get('amount').errors 
+        && entryForm.get('amount').touched}" 
+      class="form-control" 
+      formControlName="amount" 
+      placeholder="Amount ($)">
+      <div class="invalid-feedback">Please enter an expense amount.</div>
+  </div>
+
+  <div class="form-group">
+    <input type="text" 
+      [ngClass]="{'is-invalid': entryForm.get('description').errors 
+        && entryForm.get('description').touched}"
+      class="form-control" 
+      formControlName="description" 
+      placeholder="Description">
+      <div class="invalid-feedback">Please enter an expense description.</div>
+  </div>
+
+  <div class="form-group text-center">
+    <button [disabled]="!entryForm.valid" class="btn btn-success" type="submit">Submit</button>
+    <button class="btn btn-default" type="button" (click)="view()">View Expenses</button>
+  </div>
+  
+</form>

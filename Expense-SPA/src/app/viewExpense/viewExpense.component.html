@@ -1,0 +1,18 @@
+<div class="container mt-5">
+  <div *ngIf="viewMode" style="text-align: center">
+    <h2 class="text-center text-primary">Expenses</h2>
+    <hr>
+    <div class="text-center">
+      <app-expenses></app-expenses>
+      <button class="btn btn-primary btn-lg mr-2" (click)="viewToggle()">Back</button>
+    </div>
+  </div>
+
+  <div *ngIf="!viewMode" class="container">
+    <div class="row justify-content-center">
+      <div class="col-4">
+          <app-main (viewExpense)="cancelViewMode($event)"></app-main>
+      </div>
+    </div>
+  </div>
+</div>

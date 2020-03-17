@@ -27,10 +27,18 @@ namespace Expense.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Adds service to connect to Database with SQlite.
             services.AddDbContext<DataContext>(x => x.UseSqlite
                 (Configuration.GetConnectionString("DefaultConnection")));
+
+            // Adds services to add controllers.
             services.AddControllers();
+
+            // Adds Cors service.
             services.AddCors();
+
+            // Adds repositories as a service to make them injectible.
+            services.AddScoped<IEntryRepository, EntryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

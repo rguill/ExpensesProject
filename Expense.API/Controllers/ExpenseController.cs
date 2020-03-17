@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Expense.API.Data;
+using Expense.API.DTOs;
+using Expense.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +14,14 @@ namespace Expense.API.Controllers
     public class ExpenseController : ControllerBase
     {
         private readonly DataContext _context;
-        public ExpenseController(DataContext context)
+        private readonly IEntryRepository _repo;
+        public ExpenseController(DataContext context, IEntryRepository repo)
         {
+            _repo = repo;
             _context = context;
         }
 
-        // GET api/expense
+        // GetExpenses method returns a list of all expenses from the API.
         [HttpGet]
         public async Task<IActionResult> GetExpenses()
         {
@@ -26,31 +30,20 @@ namespace Expense.API.Controllers
             return Ok(expenses);
         }
 
-        // GET api/expense/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetExpense(int id)
+        // Entry method posts a new database entry to the API.
+        [HttpPost("entry")]
+        public async Task<IActionResult> Entry(ExpenseToCreateDTO expenseToCreate)
         {
-            var expense = await _context.Expenses.FirstOrDefaultAsync(x => x.Id == id);
-
-            return Ok(expense);
-        }
-
-        // POST api/expense
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/expense/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/expense/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var newEntry = new Expenses {
+                Name = expenseToCreate.Name,
+                Date = expenseToCreate.Date,
+                Amount = expenseToCreate.Amount,
+                Description = expenseToCreate.Description
+            };
+            
+            var createdEntry = await _repo.EnterExpense(newEntry);
+            
+            return StatusCode(201);
         }
     }
 }
