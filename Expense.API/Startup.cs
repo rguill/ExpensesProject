@@ -29,6 +29,8 @@ namespace Expense.API
         public void ConfigureServices(IServiceCollection services)
         {
             // Adds service to connect to Database with SQlite.
+            // Passed lambda expression configures the connection string to the default connection, which is set
+            // in appsettings.json.
             services.AddDbContext<DataContext>(x => x.UseSqlite
                 (Configuration.GetConnectionString("DefaultConnection")));
 

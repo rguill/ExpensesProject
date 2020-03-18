@@ -47,6 +47,7 @@ namespace Expense.API.Controllers
                 Description = expenseToCreate.Description
             };
 
+            // Uses the repository to create an entry in the Database..
             var createdEntry = await _repo.EnterExpense(newEntry);
 
             return StatusCode(201);
